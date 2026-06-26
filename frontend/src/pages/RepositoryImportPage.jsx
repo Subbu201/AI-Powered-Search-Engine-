@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import RepositoryService from '../services/repositoryService';
 import AuthService from '../services/authService';
 
-const RepositoryFormPage = () => {
-  const { id } = useParams();
-  const isEditMode = !!id;
+const RepositoryImportPage = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -16,32 +14,13 @@ const RepositoryFormPage = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     if (!AuthService.getCurrentUser()) {
       navigate('/login');
-      return;
     }
-
-    if (isEditMode) {
-      fetchRepository(id);
-    }
-  }, [id, navigate, isEditMode]);
-
-  const fetchRepository = async (repoId) => {
-    try {
-      const data = await RepositoryService.getById(repoId);
-      setFormData({
-        repositoryName: data.repositoryName || '',
-        repositoryUrl: data.repositoryUrl || '',
-        description: data.description || '',
-        language: data.language || ''
-      });
-    } catch (err) {
-      setError('Failed to fetch repository details.');
-      console.error(err);
-    }
-  };
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,16 +31,24 @@ const RepositoryFormPage = () => {
     e.preventDefault();
     setLoading(true);
     setError('');
+    setSuccess(false);
 
     try {
-      if (isEditMode) {
-        await RepositoryService.update(id, formData);
-      } else {
-        await RepositoryService.create(formData);
-      }
-      navigate('/repositories');
+      await RepositoryService.importRepo(formData);
+      setSuccess(true);
+      setTimeout(() => navigate('/repositories'), 2000);
     } catch (err) {
-      setError('Failed to save repository. Check if name is unique.');
+      let errorMsg = 'Failed to import repository. Ensure the URL is valid.';
+      if (err.response?.data) {
+        if (typeof err.response.data === 'string') {
+          errorMsg = err.response.data;
+        } else if (err.response.data.message) {
+          errorMsg = err.response.data.message;
+        } else {
+          errorMsg = JSON.stringify(err.response.data);
+        }
+      }
+      setError(errorMsg);
       console.error(err);
     } finally {
       setLoading(false);
@@ -71,18 +58,33 @@ const RepositoryFormPage = () => {
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
-        <h2>{isEditMode ? 'Edit Repository' : 'Add New Repository'}</h2>
-        <button className="btn-secondary" onClick={() => navigate('/repositories')}>
+        <h2>Import GitHub Repository</h2>
+        <button className="btn-secondary" onClick={() => navigate('/repositories')} disabled={loading}>
           Cancel
         </button>
       </div>
 
       <div className="auth-card" style={{ maxWidth: '600px', margin: '0 auto' }}>
         {error && <div className="error-message">{error}</div>}
+        {success && <div style={{ color: 'var(--success-color)', padding: '1rem', background: 'rgba(46, 213, 115, 0.1)', borderRadius: '8px', marginBottom: '1rem' }}>Repository imported and cloned successfully! Redirecting...</div>}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label className="form-label">Repository Name *</label>
+            <label className="form-label">GitHub Repository URL *</label>
+            <input
+              type="url"
+              name="repositoryUrl"
+              className="form-input"
+              value={formData.repositoryUrl}
+              onChange={handleChange}
+              placeholder="e.g., https://github.com/user/repo.git"
+              required
+              disabled={loading}
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Repository Name (Local alias) *</label>
             <input
               type="text"
               name="repositoryName"
@@ -91,19 +93,7 @@ const RepositoryFormPage = () => {
               onChange={handleChange}
               placeholder="e.g., react-core"
               required
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Repository URL *</label>
-            <input
-              type="url"
-              name="repositoryUrl"
-              className="form-input"
-              value={formData.repositoryUrl}
-              onChange={handleChange}
-              placeholder="e.g., https://github.com/facebook/react"
-              required
+              disabled={loading}
             />
           </div>
 
@@ -116,6 +106,7 @@ const RepositoryFormPage = () => {
               value={formData.language}
               onChange={handleChange}
               placeholder="e.g., JavaScript, Java, Python"
+              disabled={loading}
             />
           </div>
 
@@ -129,11 +120,16 @@ const RepositoryFormPage = () => {
               placeholder="Brief description of the repository..."
               rows="4"
               style={{ resize: 'vertical' }}
+              disabled={loading}
             />
           </div>
 
-          <button type="submit" className="btn-primary" disabled={loading}>
-            {loading ? 'Saving...' : 'Save Repository'}
+          <button type="submit" className="btn-primary" disabled={loading} style={{ position: 'relative' }}>
+            {loading ? (
+              <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+                <span className="spinner"></span> Cloning Repository...
+              </span>
+            ) : 'Import Repository'}
           </button>
         </form>
       </div>
@@ -141,4 +137,4 @@ const RepositoryFormPage = () => {
   );
 };
 
-export default RepositoryFormPage;
+export default RepositoryImportPage;

@@ -24,10 +24,25 @@ public class Repository {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column
+    @Column(nullable = false)
     private String language;
 
-    @Column(nullable = false, updatable = false)
+    @Column
+    private String localPath;
+
+    @Column(nullable = false)
+    private String indexingStatus = "PENDING";
+
+    @Column
+    private Integer totalFilesToIndex = 0;
+
+    @Column
+    private Long indexingStartTime;
+
+    @Column
+    private Long indexingEndTime;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @PrePersist

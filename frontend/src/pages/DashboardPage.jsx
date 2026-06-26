@@ -39,9 +39,6 @@ const DashboardPage = () => {
       <div className="dashboard-header">
         <h2>Dashboard</h2>
         <div style={{ display: 'flex', gap: '1rem' }}>
-          <button className="btn-primary" style={{ marginTop: 0 }} onClick={() => navigate('/repositories')}>
-            Manage Repositories
-          </button>
           <button className="btn-secondary" onClick={handleLogout}>
             Sign Out
           </button>
@@ -53,6 +50,26 @@ const DashboardPage = () => {
         <p style={{ color: 'var(--text-muted)' }}>
           You have successfully logged into the AI-Powered Code Search & Repository Analytics Platform.
         </p>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginTop: '3rem', marginBottom: '3rem' }}>
+          <div className="auth-card" style={{ padding: '2rem', textAlign: 'center', cursor: 'pointer', transition: 'transform 0.2s', margin: 0 }} 
+               onClick={() => navigate('/repositories')}
+               onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
+               onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📁</div>
+            <h3>Manage Repositories</h3>
+            <p style={{ color: 'var(--text-muted)' }}>Import, index, and delete your codebases.</p>
+          </div>
+
+          <div className="auth-card" style={{ padding: '2rem', textAlign: 'center', cursor: 'pointer', transition: 'transform 0.2s', margin: 0 }} 
+               onClick={() => navigate('/search')}
+               onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
+               onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔍</div>
+            <h3>Code Search Engine</h3>
+            <p style={{ color: 'var(--text-muted)' }}>Search across all indexed files instantly.</p>
+          </div>
+        </div>
         
         {stats && (
           <div className="kpi-grid">

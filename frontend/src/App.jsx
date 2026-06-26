@@ -4,7 +4,10 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
 import RepositoryListPage from './pages/RepositoryListPage';
-import RepositoryFormPage from './pages/RepositoryFormPage';
+import RepositoryImportPage from './pages/RepositoryImportPage';
+import RepositoryFilesPage from './pages/RepositoryFilesPage';
+import FileViewerPage from './pages/FileViewerPage';
+import SearchPage from './pages/SearchPage';
 
 function App() {
   return (
@@ -15,8 +18,10 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/repositories" element={<RepositoryListPage />} />
-        <Route path="/repositories/new" element={<RepositoryFormPage />} />
-        <Route path="/repositories/:id/edit" element={<RepositoryFormPage />} />
+        <Route path="/repositories/import" element={<RepositoryImportPage />} />
+        <Route path="/repositories/:id/files" element={<RepositoryFilesPage />} />
+        <Route path="/files/:id/view" element={<FileViewerPage />} />
+        <Route path="/search" element={<SearchPage />} />
       </Routes>
     </Router>
   );

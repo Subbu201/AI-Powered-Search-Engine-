@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+import com.searchengine.service.RepositoryService;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/repositories")
@@ -16,6 +18,20 @@ public class RepositoryController {
 
     @Autowired
     private RepositoryRepository repositoryRepository;
+
+    @Autowired
+    private RepositoryService repositoryService;
+
+    @PostMapping("/import")
+    public ResponseEntity<?> importRepository(@RequestBody Repository repository) {
+        try {
+            Repository importedRepo = repositoryService.importRepository(repository);
+            return ResponseEntity.ok(importedRepo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Import failed: " + e.getMessage());
+        }
+    }
 
     @GetMapping
     public List<Repository> getAllRepositories() {

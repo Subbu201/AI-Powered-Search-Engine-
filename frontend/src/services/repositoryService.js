@@ -23,6 +23,11 @@ class RepositoryService {
     return response.data;
   }
 
+  async importRepo(repository) {
+    const response = await axios.post(`${API_URL}/import`, repository);
+    return response.data;
+  }
+
   async delete(id) {
     const response = await axios.delete(`${API_URL}/${id}`);
     return response.data;
