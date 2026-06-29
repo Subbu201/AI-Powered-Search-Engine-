@@ -20,46 +20,60 @@ public class AuthController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    private org.springframework.security.authentication.AuthenticationManager authenticationManager;
+
+    @Autowired
+    private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private com.searchengine.security.JwtService jwtService;
+
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         
-        Optional<User> userOpt = userRepository.findByUsername(loginRequest.getUsername());
-        
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
-            // Simple plain-text password check for simplicity (as requested)
-            if (user.getPassword().equals(loginRequest.getPassword())) {
-                // Return a simple mock token to satisfy frontend
-                String mockToken = "mock-token-" + user.getId();
-                return ResponseEntity.ok(new AuthResponse(mockToken, 
-                                                         user.getId(), 
-                                                         user.getUsername(), 
-                                                         user.getEmail()));
-            }
+        try {
+            org.springframework.security.core.Authentication authentication = authenticationManager.authenticate(
+                    new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
+                            loginRequest.getUsername(),
+                            loginRequest.getPassword()
+                    )
+            );
+            
+            User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow();
+            String jwt = jwtService.generateToken(user);
+            
+            return ResponseEntity.ok(new AuthResponse(jwt, 
+                                                     "Bearer",
+                                                     user.getId(), 
+                                                     user.getUsername(), 
+                                                     user.getEmail()));
+        } catch (org.springframework.security.core.AuthenticationException e) {
+            return ResponseEntity.status(401).body("Error: Invalid username or password!");
         }
-        
-        return ResponseEntity.badRequest().body("Error: Invalid username or password!");
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body("Error: Username is already taken!");
+        
+        Optional<User> existingUser = userRepository.findByEmail(signUpRequest.getEmail());
+        if (existingUser.isEmpty()) {
+            existingUser = userRepository.findByUsername(signUpRequest.getUsername());
         }
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body("Error: Email is already in use!");
+        User user;
+        if (existingUser.isPresent()) {
+            user = existingUser.get();
+            // Update password for the existing user so they can login with BCrypt
+            user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
+            userRepository.save(user);
+            return ResponseEntity.ok("User updated successfully!");
         }
 
-        // Create new user's account with plain text password for maximum simplicity
-        User user = new User();
+        user = new User();
         user.setUsername(signUpRequest.getUsername());
         user.setEmail(signUpRequest.getEmail());
-        user.setPassword(signUpRequest.getPassword());
+        user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
 
         userRepository.save(user);
 

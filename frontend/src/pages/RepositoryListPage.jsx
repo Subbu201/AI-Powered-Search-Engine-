@@ -113,15 +113,14 @@ const RepositoryListPage = () => {
         ) : repositories.length === 0 ? (
           <p style={{ color: 'var(--text-muted)' }}>No repositories found. Add one to get started!</p>
         ) : (
-          <div style={{ overflowX: 'auto' }}>
             <table className="data-table">
               <thead>
                 <tr>
-                  <th>Name</th>
-                  <th>URL</th>
-                  <th>Local Path</th>
-                  <th>Status</th>
-                  <th>Actions</th>
+                  <th style={{width: '20%'}}>Name</th>
+                  <th style={{width: '25%'}}>URL</th>
+                  <th style={{width: '15%'}}>Local Path</th>
+                  <th style={{width: '10%'}}>Status</th>
+                  <th style={{width: '30%'}}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -146,10 +145,7 @@ const RepositoryListPage = () => {
                             <button className="btn-secondary" onClick={() => handleIndex(repo.id)} disabled={isWorking}>
                               {isWorking ? <span className="spinner" style={{ width: '12px', height: '12px', borderWidth: '2px' }}></span> : 'Index'}
                             </button>
-                            <button className="btn-primary" onClick={() => navigate(`/repositories/${repo.id}/files`)}>Files</button>
-                            {repo.indexingStatus === 'COMPLETED' && !perf && (
-                                <button className="btn-secondary" onClick={() => handleShowPerformance(repo.id)}>Stats</button>
-                            )}
+                            <button className="btn-primary" style={{marginTop: 0}} onClick={() => navigate(`/repositories/${repo.id}/files`)}>Files</button>
                             <button className="btn-danger" onClick={() => handleDelete(repo.id)}>Delete</button>
                           </div>
                         </td>
@@ -167,24 +163,12 @@ const RepositoryListPage = () => {
                           </td>
                         </tr>
                       )}
-                      {/* Performance Stats Row */}
-                      {perf && (
-                         <tr>
-                           <td colSpan="5" style={{ padding: '0 1rem 1rem 1rem', borderBottom: '1px solid rgba(102, 126, 234, 0.08)' }}>
-                             <div style={{ display: 'flex', gap: '2rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                               <span><strong>Time Taken:</strong> {(perf.totalTimeMs / 1000).toFixed(2)}s</span>
-                               <span><strong>Avg Time/File:</strong> {perf.averageProcessingTimeMs}ms</span>
-                               <span><strong>Files Indexed:</strong> {perf.totalFilesIndexed}</span>
-                             </div>
-                           </td>
-                         </tr>
-                      )}
+
                     </React.Fragment>
                   );
                 })}
               </tbody>
             </table>
-          </div>
         )}
       </div>
     </div>

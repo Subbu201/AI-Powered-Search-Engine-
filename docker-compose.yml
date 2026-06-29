@@ -1,0 +1,55 @@
+
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: searchengine_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: code_search_db
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: searchengine_backend
+    restart: always
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/code_search_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=${DB_USERNAME:-root}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD:-root}
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - app_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: searchengine_frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - app_network
+
+volumes:
+  db_data:
+
+networks:
+  app_network:
+    driver: bridge

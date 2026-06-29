@@ -51,15 +51,14 @@ const RepositoryFilesPage = () => {
         ) : files.length === 0 ? (
           <p style={{ color: 'var(--text-muted)' }}>No files indexed yet. Please go back and click Index.</p>
         ) : (
-          <div style={{ overflowX: 'auto' }}>
             <table className="data-table">
               <thead>
                 <tr>
-                  <th>File Name</th>
-                  <th>Type</th>
-                  <th>Path</th>
-                  <th>Indexed Time</th>
-                  <th>Actions</th>
+                  <th style={{width: '25%'}}>File Name</th>
+                  <th style={{width: '10%'}}>Type</th>
+                  <th style={{width: '35%'}}>Path</th>
+                  <th style={{width: '15%'}}>Indexed Time</th>
+                  <th style={{width: '15%'}}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -70,7 +69,7 @@ const RepositoryFilesPage = () => {
                     <td style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{file.filePath}</td>
                     <td>{new Date(file.indexedAt).toLocaleString()}</td>
                     <td>
-                      <button className="btn-primary" onClick={() => navigate(`/files/${file.id}/view`)}>
+                      <button className="btn-primary" style={{marginTop: 0}} onClick={() => navigate(`/files/${file.id}/view`)}>
                         View Code
                       </button>
                     </td>
@@ -78,7 +77,6 @@ const RepositoryFilesPage = () => {
                 ))}
               </tbody>
             </table>
-          </div>
         )}
       </div>
     </div>

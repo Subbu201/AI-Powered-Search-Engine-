@@ -22,7 +22,18 @@ public class SearchService {
     @Autowired
     private RepositoryRepository repositoryRepository;
 
-    public List<SearchResultDTO> searchByKeyword(String keyword) {
+    @Autowired
+    private com.searchengine.repository.SearchHistoryRepository searchHistoryRepository;
+
+    public List<SearchResultDTO> searchByKeyword(String keyword, Long userId) {
+        // Log search history
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            com.searchengine.model.SearchHistory history = new com.searchengine.model.SearchHistory();
+            history.setKeyword(keyword.trim());
+            history.setUserId(userId);
+            searchHistoryRepository.save(history);
+        }
+
         List<CodeFile> rawResults = codeFileRepository.searchByFileContent(keyword);
         return rankAndMapResults(rawResults, keyword);
     }

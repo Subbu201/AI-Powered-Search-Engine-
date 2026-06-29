@@ -11,14 +11,17 @@ public class DashboardService {
     @Autowired
     private RepositoryRepository repositoryRepository;
 
+    @Autowired
+    private com.searchengine.repository.CodeFileRepository codeFileRepository;
+
+    @Autowired
+    private com.searchengine.repository.SearchHistoryRepository searchHistoryRepository;
+
     public DashboardStats getDashboardStats() {
-        // Query real count for repositories from database
         long actualRepositories = repositoryRepository.count();
+        long actualIndexedFiles = codeFileRepository.count();
+        long actualSearches = searchHistoryRepository.count();
         
-        // For now, set other mock data to 0 as requested until they are implemented
-        long mockIndexedFiles = 0;
-        long mockSearches = 0;
-        
-        return new DashboardStats(actualRepositories, mockIndexedFiles, mockSearches);
+        return new DashboardStats(actualRepositories, actualIndexedFiles, actualSearches);
     }
 }

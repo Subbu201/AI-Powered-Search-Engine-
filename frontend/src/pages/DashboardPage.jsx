@@ -51,7 +51,8 @@ const DashboardPage = () => {
           You have successfully logged into the AI-Powered Code Search & Repository Analytics Platform.
         </p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginTop: '3rem', marginBottom: '3rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2rem', marginTop: '3rem', marginBottom: '3rem' }}>
+          
           <div className="auth-card" style={{ padding: '2rem', textAlign: 'center', cursor: 'pointer', transition: 'transform 0.2s', margin: 0 }} 
                onClick={() => navigate('/repositories')}
                onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
@@ -68,6 +69,15 @@ const DashboardPage = () => {
             <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🔍</div>
             <h3>Code Search Engine</h3>
             <p style={{ color: 'var(--text-muted)' }}>Search across all indexed files instantly.</p>
+          </div>
+
+          <div className="auth-card" style={{ padding: '2rem', textAlign: 'center', cursor: 'pointer', transition: 'transform 0.2s', margin: 0 }} 
+               onClick={() => navigate('/analytics')}
+               onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
+               onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
+            <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📈</div>
+            <h3>Analytics Dashboard</h3>
+            <p style={{ color: 'var(--text-muted)' }}>View system statistics and search trends.</p>
           </div>
         </div>
         

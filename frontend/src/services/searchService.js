@@ -2,9 +2,16 @@ import axios from 'axios';
 
 const API_URL = '/api/search';
 
+import AuthService from './authService';
+
 class SearchService {
   async searchByKeyword(keyword) {
-    const response = await axios.get(`${API_URL}?keyword=${encodeURIComponent(keyword)}`);
+    let url = `${API_URL}?keyword=${encodeURIComponent(keyword)}`;
+    const user = AuthService.getCurrentUser();
+    if (user && user.id) {
+        url += `&userId=${user.id}`;
+    }
+    const response = await axios.get(url);
     return response.data;
   }
 

@@ -17,9 +17,9 @@ public class SearchController {
     private SearchService searchService;
 
     @GetMapping
-    public ResponseEntity<?> searchByKeyword(@RequestParam String keyword) {
+    public ResponseEntity<?> searchByKeyword(@RequestParam String keyword, @RequestParam(required = false) Long userId) {
         try {
-            List<SearchResultDTO> results = searchService.searchByKeyword(keyword);
+            List<SearchResultDTO> results = searchService.searchByKeyword(keyword, userId);
             return ResponseEntity.ok(results);
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error executing search: " + e.getMessage());

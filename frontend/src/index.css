@@ -98,6 +98,7 @@ body {
   cursor: pointer;
   transition: background-color 0.2s, transform 0.1s;
   margin-top: 1rem;
+  white-space: nowrap;
 }
 
 .btn-primary:hover {
@@ -163,6 +164,7 @@ body {
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 
 .btn-secondary:hover {
@@ -221,12 +223,15 @@ body {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
+  table-layout: fixed;
 }
 
 .data-table th, .data-table td {
   padding: 1rem;
   text-align: left;
   border-bottom: 1px solid var(--border-color);
+  overflow-wrap: anywhere;
+  word-break: normal;
 }
 
 .data-table th {
@@ -248,6 +253,7 @@ body {
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
 }
 
 .btn-danger:hover {
@@ -257,6 +263,7 @@ body {
 
 .actions-cell {
   display: flex;
+  flex-wrap: nowrap;
   gap: 0.5rem;
 }
 
@@ -271,4 +278,20 @@ body {
 }
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+/* Recharts Dark Mode Fixes */
+.recharts-text {
+  fill: var(--text-main) !important;
+}
+.recharts-tooltip-wrapper .recharts-default-tooltip {
+  background-color: var(--card-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-main) !important;
+}
+.recharts-tooltip-item {
+  color: var(--text-main) !important;
+}
+.recharts-legend-item-text {
+  color: var(--text-main) !important;
 }

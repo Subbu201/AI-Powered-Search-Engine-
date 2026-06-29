@@ -74,6 +74,9 @@ const SearchPage = () => {
     <div className="dashboard-container">
       <div className="dashboard-header">
         <h2>Code Search Engine</h2>
+        <button className="btn-secondary" onClick={() => navigate('/dashboard')}>
+          Back to Dashboard
+        </button>
       </div>
 
       <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', justifyContent: 'center', flexWrap: 'wrap' }}>

@@ -10,7 +10,7 @@ const RepositoryImportPage = () => {
     repositoryName: '',
     repositoryUrl: '',
     description: '',
-    language: ''
+    language: 'Mixed'
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -93,19 +93,6 @@ const RepositoryImportPage = () => {
               onChange={handleChange}
               placeholder="e.g., react-core"
               required
-              disabled={loading}
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="form-label">Primary Language</label>
-            <input
-              type="text"
-              name="language"
-              className="form-input"
-              value={formData.language}
-              onChange={handleChange}
-              placeholder="e.g., JavaScript, Java, Python"
               disabled={loading}
             />
           </div>
