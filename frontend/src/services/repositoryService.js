@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = '/api/repositories';
+const API_URL = (import.meta.env.VITE_API_BASE_URL || '') + '/api/repositories';
 
 class RepositoryService {
   async getAll() {
@@ -35,3 +35,4 @@ class RepositoryService {
 }
 
 export default new RepositoryService();
+

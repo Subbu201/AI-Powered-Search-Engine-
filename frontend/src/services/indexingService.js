@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = '/api/index';
+const API_URL = (import.meta.env.VITE_API_BASE_URL || '') + '/api/index';
 
 class IndexingService {
   async indexRepository(repositoryId) {
@@ -30,3 +30,4 @@ class IndexingService {
 }
 
 export default new IndexingService();
+

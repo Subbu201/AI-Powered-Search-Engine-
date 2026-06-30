@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = '/api/dashboard/';
+const API_URL = (import.meta.env.VITE_API_BASE_URL || '') + '/api/dashboard/';
 
 class DashboardService {
   async getStats() {
@@ -10,3 +10,4 @@ class DashboardService {
 }
 
 export default new DashboardService();
+

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = '/api/analytics';
+const API_URL = (import.meta.env.VITE_API_BASE_URL || '') + '/api/analytics';
 
 class AnalyticsService {
   async getOverview() {
@@ -28,3 +28,4 @@ class AnalyticsService {
 }
 
 export default new AnalyticsService();
+
