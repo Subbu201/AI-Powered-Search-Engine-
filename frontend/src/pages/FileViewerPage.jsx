@@ -142,6 +142,10 @@ const FileViewerPage = () => {
               <div style={{ textAlign: 'center', padding: '2rem' }}>
                 <span className="spinner" style={{ width: '40px', height: '40px', borderWidth: '4px', borderColor: '#673ab7', borderTopColor: 'transparent', margin: '0 auto' }}></span>
                 <p style={{ marginTop: '1rem', color: 'var(--text-muted)' }}>Gemini AI is analyzing the code...</p>
+                <div style={{ marginTop: '15px', fontSize: '13px', color: '#666', textAlign: 'center', padding: '10px', backgroundColor: '#f0f4f8', borderRadius: '4px' }}>
+                  <i style={{ display: 'block', marginBottom: '5px' }}>⏱️ Note: If the server was asleep, this might take up to 15-30 seconds.</i>
+                  Please don't close this window.
+                </div>
               </div>
             ) : (
               <div style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6', fontSize: '0.95rem' }}>
