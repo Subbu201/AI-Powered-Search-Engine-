@@ -7,6 +7,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   
   const navigate = useNavigate();
@@ -18,8 +19,8 @@ const RegisterPage = () => {
 
     try {
       await AuthService.register(username, email, password);
-      // Auto login after register or just redirect to login
-      navigate('/login');
+      setSuccess('Account created successfully! Redirecting to login...');
+      setTimeout(() => navigate('/login'), 2000);
     } catch (err) {
       const resMessage =
         (err.response && err.response.data) ||
@@ -38,6 +39,7 @@ const RegisterPage = () => {
         <p className="auth-subtitle">Join us to start searching code</p>
         
         {error && <div className="error-message">{error}</div>}
+        {success && <div className="success-message" style={{color: 'green', padding: '10px', marginBottom: '15px', backgroundColor: '#e6ffe6', borderRadius: '4px', border: '1px solid green'}}>{success}</div>}
         
         <form onSubmit={handleRegister}>
           <div className="form-group">
