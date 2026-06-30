@@ -34,7 +34,7 @@ public class FileIndexingService {
     );
 
     @Transactional
-    public String indexRepository(Long repositoryId) throws Exception {
+    public String indexRepository(String repositoryId) throws Exception {
         Repository repo = repositoryRepository.findById(repositoryId)
                 .orElseThrow(() -> new Exception("Repository not found with ID: " + repositoryId));
 

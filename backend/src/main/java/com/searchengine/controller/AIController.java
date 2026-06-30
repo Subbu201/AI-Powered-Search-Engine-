@@ -17,7 +17,7 @@ public class AIController {
     private AIService aiService;
 
     @PostMapping("/explain/{fileId}")
-    public ResponseEntity<?> explainCode(@PathVariable Long fileId) {
+    public ResponseEntity<?> explainCode(@PathVariable String fileId) {
         try {
             String explanation = aiService.explainCode(fileId);
             return buildResponse(explanation);
@@ -27,7 +27,7 @@ public class AIController {
     }
 
     @PostMapping("/summary/{fileId}")
-    public ResponseEntity<?> summarizeCode(@PathVariable Long fileId) {
+    public ResponseEntity<?> summarizeCode(@PathVariable String fileId) {
         try {
             String summary = aiService.summarizeCode(fileId);
             return buildResponse(summary);
@@ -37,7 +37,7 @@ public class AIController {
     }
 
     @PostMapping("/suggestions/{fileId}")
-    public ResponseEntity<?> suggestImprovements(@PathVariable Long fileId) {
+    public ResponseEntity<?> suggestImprovements(@PathVariable String fileId) {
         try {
             String suggestions = aiService.suggestImprovements(fileId);
             return buildResponse(suggestions);

@@ -17,11 +17,12 @@ public class SearchController {
     private SearchService searchService;
 
     @GetMapping
-    public ResponseEntity<?> searchByKeyword(@RequestParam String keyword, @RequestParam(required = false) Long userId) {
+    public ResponseEntity<?> searchByKeyword(@RequestParam String keyword, @RequestParam(required = false) String userId) {
         try {
             List<SearchResultDTO> results = searchService.searchByKeyword(keyword, userId);
             return ResponseEntity.ok(results);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(500).body("Error executing search: " + e.getMessage());
         }
     }
@@ -37,7 +38,7 @@ public class SearchController {
     }
 
     @GetMapping("/repository/{repositoryId}")
-    public ResponseEntity<?> searchByRepository(@PathVariable Long repositoryId) {
+    public ResponseEntity<?> searchByRepository(@PathVariable String repositoryId) {
         try {
             List<SearchResultDTO> results = searchService.searchByRepository(repositoryId);
             return ResponseEntity.ok(results);

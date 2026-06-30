@@ -25,12 +25,13 @@ public class SearchService {
     @Autowired
     private com.searchengine.repository.SearchHistoryRepository searchHistoryRepository;
 
-    public List<SearchResultDTO> searchByKeyword(String keyword, Long userId) {
+    public List<SearchResultDTO> searchByKeyword(String keyword, String userId) {
         // Log search history
         if (keyword != null && !keyword.trim().isEmpty()) {
             com.searchengine.model.SearchHistory history = new com.searchengine.model.SearchHistory();
             history.setKeyword(keyword.trim());
             history.setUserId(userId);
+            history.setSearchedAt(java.time.LocalDateTime.now());
             searchHistoryRepository.save(history);
         }
 
@@ -47,7 +48,7 @@ public class SearchService {
         return rankAndMapResults(rawResults, ""); // Empty keyword means no score, just listing
     }
 
-    public List<SearchResultDTO> searchByRepository(Long repositoryId) {
+    public List<SearchResultDTO> searchByRepository(String repositoryId) {
         List<CodeFile> rawResults = codeFileRepository.findByRepositoryId(repositoryId);
         return rankAndMapResults(rawResults, "");
     }
@@ -59,7 +60,7 @@ public class SearchService {
 
     private List<SearchResultDTO> rankAndMapResults(List<CodeFile> files, String keyword) {
         // Pre-fetch repositories to avoid N+1 queries
-        Map<Long, Repository> repoMap = new HashMap<>();
+        Map<String, Repository> repoMap = new HashMap<>();
         repositoryRepository.findAll().forEach(repo -> repoMap.put(repo.getId(), repo));
 
         List<SearchResultDTO> dtoList = new ArrayList<>();

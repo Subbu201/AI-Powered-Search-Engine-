@@ -28,7 +28,7 @@ public class FileIndexController {
     private RepositoryRepository repositoryRepository;
 
     @PostMapping("/{repositoryId}")
-    public ResponseEntity<?> indexRepository(@PathVariable Long repositoryId) {
+    public ResponseEntity<?> indexRepository(@PathVariable String repositoryId) {
         try {
             String result = fileIndexingService.indexRepository(repositoryId);
             return ResponseEntity.ok(result);
@@ -39,7 +39,7 @@ public class FileIndexController {
     }
 
     @GetMapping("/status/{repositoryId}")
-    public ResponseEntity<?> getIndexingStatus(@PathVariable Long repositoryId) {
+    public ResponseEntity<?> getIndexingStatus(@PathVariable String repositoryId) {
         try {
             Repository repo = repositoryRepository.findById(repositoryId).orElse(null);
             if (repo == null) return ResponseEntity.status(404).body("Repository not found");
@@ -62,7 +62,7 @@ public class FileIndexController {
     }
 
     @GetMapping("/performance/{repositoryId}")
-    public ResponseEntity<?> getPerformance(@PathVariable Long repositoryId) {
+    public ResponseEntity<?> getPerformance(@PathVariable String repositoryId) {
         try {
             Repository repo = repositoryRepository.findById(repositoryId).orElse(null);
             if (repo == null) return ResponseEntity.status(404).body("Repository not found");
@@ -89,7 +89,7 @@ public class FileIndexController {
     }
 
     @GetMapping("/files/{repositoryId}")
-    public ResponseEntity<?> getIndexedFiles(@PathVariable Long repositoryId) {
+    public ResponseEntity<?> getIndexedFiles(@PathVariable String repositoryId) {
         try {
             List<CodeFile> files = codeFileRepository.findByRepositoryId(repositoryId);
             // Optionally, we could map this to a DTO to exclude fileContent for faster loading, 
@@ -101,7 +101,7 @@ public class FileIndexController {
     }
 
     @GetMapping("/file/{fileId}")
-    public ResponseEntity<?> getFileDetails(@PathVariable Long fileId) {
+    public ResponseEntity<?> getFileDetails(@PathVariable String fileId) {
         try {
             CodeFile file = codeFileRepository.findById(fileId).orElse(null);
             if (file == null) {

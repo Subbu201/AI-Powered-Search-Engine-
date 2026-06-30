@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SearchResultDTO {
-    private Long fileId;
+    private String fileId;
     private String fileName;
     private String repositoryName;
     private String filePath;

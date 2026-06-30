@@ -22,7 +22,7 @@ public class AnalyticsController {
     }
 
     @GetMapping("/languages")
-    public ResponseEntity<List<LanguageStatDTO>> getLanguageStats(@RequestParam(required = false) Long repositoryId) {
+    public ResponseEntity<List<LanguageStatDTO>> getLanguageStats(@RequestParam(required = false) String repositoryId) {
         return ResponseEntity.ok(analyticsService.getLanguageStats(repositoryId));
     }
 

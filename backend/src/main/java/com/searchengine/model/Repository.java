@@ -1,51 +1,42 @@
 package com.searchengine.model;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.index.Indexed;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "repositories")
+@Document(collection = "repositories")
 @Data
 @NoArgsConstructor
 public class Repository {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(nullable = false, unique = true)
+    @Indexed(unique = true)
     private String repositoryName;
 
-    @Column(nullable = false)
     private String repositoryUrl;
 
-    @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(nullable = false)
     private String language;
 
-    @Column
     private String localPath;
 
-    @Column(nullable = false)
     private String indexingStatus = "PENDING";
 
-    @Column
     private Integer totalFilesToIndex = 0;
 
-    @Column
     private Long indexingStartTime;
 
-    @Column
     private Long indexingEndTime;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @PrePersist
+
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }

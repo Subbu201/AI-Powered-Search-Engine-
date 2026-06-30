@@ -39,7 +39,7 @@ public class RepositoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Repository> getRepositoryById(@PathVariable Long id) {
+    public ResponseEntity<Repository> getRepositoryById(@PathVariable String id) {
         Optional<Repository> repositoryData = repositoryRepository.findById(id);
         return repositoryData.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -57,7 +57,7 @@ public class RepositoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Repository> updateRepository(@PathVariable Long id, @RequestBody Repository repositoryDetails) {
+    public ResponseEntity<Repository> updateRepository(@PathVariable String id, @RequestBody Repository repositoryDetails) {
         Optional<Repository> repositoryData = repositoryRepository.findById(id);
 
         if (repositoryData.isPresent()) {
@@ -73,7 +73,7 @@ public class RepositoryController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRepository(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteRepository(@PathVariable String id) {
         try {
             repositoryRepository.deleteById(id);
             return ResponseEntity.ok().build();

@@ -1,30 +1,26 @@
 package com.searchengine.model;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "search_logs")
+@Document(collection = "search_history")
 @Data
 @NoArgsConstructor
 public class SearchHistory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(nullable = false)
     private String keyword;
 
-    @Column(nullable = false)
     private LocalDateTime searchedAt;
 
-    @Column
-    private Long userId;
+    private String userId;
 
-    @PrePersist
+
     protected void onCreate() {
         searchedAt = LocalDateTime.now();
     }

@@ -28,19 +28,19 @@ public class AIService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    public String explainCode(Long fileId) throws Exception {
+    public String explainCode(String fileId) throws Exception {
         return callGemini(fileId, "Please explain the following source code in detail:");
     }
 
-    public String summarizeCode(Long fileId) throws Exception {
+    public String summarizeCode(String fileId) throws Exception {
         return callGemini(fileId, "Please provide a concise summary of what this code does:");
     }
 
-    public String suggestImprovements(Long fileId) throws Exception {
+    public String suggestImprovements(String fileId) throws Exception {
         return callGemini(fileId, "Please review this code and suggest improvements, optimizations, and best practices:");
     }
 
-    private String callGemini(Long fileId, String promptInstruction) throws Exception {
+    private String callGemini(String fileId, String promptInstruction) throws Exception {
         CodeFile file = codeFileRepository.findById(fileId)
                 .orElseThrow(() -> new Exception("File not found with ID: " + fileId));
 

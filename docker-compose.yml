@@ -2,16 +2,27 @@
 
 services:
   db:
-    image: mysql:8.0
+    image: mongo:latest
     container_name: searchengine_db
     restart: always
-    environment:
-      MYSQL_DATABASE: code_search_db
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
     ports:
-      - "3307:3306"
+      - "27017:27017"
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/data/db
+    networks:
+      - app_network
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: searchengine_mongo_express
+    restart: always
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=db
+      - ME_CONFIG_MONGODB_PORT=27017
+    depends_on:
+      - db
     networks:
       - app_network
 
@@ -23,14 +34,10 @@ services:
     restart: always
     environment:
       - SERVER_PORT=8080
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/code_search_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-      - SPRING_DATASOURCE_USERNAME=${DB_USERNAME:-root}
-      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD:-root}
+      - SPRING_DATA_MONGODB_URI=${SPRING_DATA_MONGODB_URI}
       - GEMINI_API_KEY=${GEMINI_API_KEY:-}
     ports:
       - "8080:8080"
-    depends_on:
-      - db
     networks:
       - app_network
 

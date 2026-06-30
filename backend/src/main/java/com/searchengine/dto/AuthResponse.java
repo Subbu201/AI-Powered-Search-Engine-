@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class AuthResponse {
     private String token;
     private String type = "Bearer";
-    private Long id;
+    private String id;
     private String username;
     private String email;
 }

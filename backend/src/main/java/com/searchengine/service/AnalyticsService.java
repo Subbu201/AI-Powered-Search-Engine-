@@ -39,7 +39,7 @@ public class AnalyticsService {
         );
     }
 
-    public List<LanguageStatDTO> getLanguageStats(Long repositoryId) {
+    public List<LanguageStatDTO> getLanguageStats(String repositoryId) {
         List<com.searchengine.model.CodeFile> files;
         if (repositoryId != null) {
             files = codeFileRepository.findByRepositoryId(repositoryId);
@@ -62,12 +62,24 @@ public class AnalyticsService {
                 .collect(Collectors.toList());
     }
 
+    @Autowired
+    private org.springframework.data.mongodb.core.MongoTemplate mongoTemplate;
+
     public List<KeywordStatDTO> getTopSearches() {
-        List<Object[]> top = searchHistoryRepository.findTopSearches(PageRequest.of(0, 10));
+        org.springframework.data.mongodb.core.aggregation.Aggregation aggregation = org.springframework.data.mongodb.core.aggregation.Aggregation.newAggregation(
+                org.springframework.data.mongodb.core.aggregation.Aggregation.group("keyword").count().as("count"),
+                org.springframework.data.mongodb.core.aggregation.Aggregation.sort(org.springframework.data.domain.Sort.Direction.DESC, "count"),
+                org.springframework.data.mongodb.core.aggregation.Aggregation.limit(10)
+        );
+
+        org.springframework.data.mongodb.core.aggregation.AggregationResults<org.bson.Document> results = mongoTemplate.aggregate(aggregation, "search_history", org.bson.Document.class);
+        List<org.bson.Document> top = results.getMappedResults();
+
         List<KeywordStatDTO> result = new ArrayList<>();
-        for (Object[] row : top) {
-            String keyword = (String) row[0];
-            Long count = (Long) row[1];
+        for (org.bson.Document row : top) {
+            String keyword = row.getString("_id");
+            Number countNum = row.get("count", Number.class);
+            Long count = countNum != null ? countNum.longValue() : 0L;
             result.add(new KeywordStatDTO(keyword, count));
         }
         return result;
