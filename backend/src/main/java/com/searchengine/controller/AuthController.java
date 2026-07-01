@@ -78,7 +78,7 @@ public class AuthController {
         return ResponseEntity.ok("User registered successfully!");
     }
 
-    @PostMapping("/health")
+    @GetMapping("/health")
     public ResponseEntity<?> health() {
         return ResponseEntity.ok("Search Engine Backend is running");
     }
