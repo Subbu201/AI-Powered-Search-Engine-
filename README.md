@@ -1,46 +1,141 @@
-# AI-Powered Code Search & Repository Analytics Platform
+# 🤖 AI-Powered Code Search Engine
 
-## Local Docker Deployment
+An AI-powered full-stack web application that enables developers to search code repositories, understand code with AI-generated explanations, and manage indexed repositories efficiently.
 
-This guide provides step-by-step instructions for deploying the platform locally using Docker.
+## 🚀 Live Demo
 
-### Prerequisites
-- Docker installed on your machine
-- Docker Compose installed
+Frontend: https://ai-powered-search-engine-2.onrender.com
 
-### Configuration
-Create a `.env` file in the root of the repository:
-```bash
-DB_USERNAME=root
-DB_PASSWORD=your_secure_password
-JWT_SECRET=your_jwt_secret_key
-GEMINI_API_KEY=your_gemini_api_key
+Backend API: https://ai-powered-search-engine-1-e8vr.onrender.com
+
+## ✨ Features
+
+- 🔐 JWT-based User Authentication
+- 👤 User Registration & Login
+- 📂 Repository Indexing
+- 🔍 Fast Code Search
+- 🤖 AI-Powered Code Explanation using Google Gemini
+- 📊 Search Analytics Dashboard
+- ☁️ MongoDB Atlas Integration
+- 🌐 RESTful APIs
+- 🐳 Docker Support
+- 🚀 Deployed on Render
+
+## 🛠️ Tech Stack
+
+### Frontend
+- React
+- Vite
+- React Router
+- Axios
+
+### Backend
+- Java
+- Spring Boot 3
+- Spring Security
+- JWT Authentication
+- Maven
+
+### Database
+- MongoDB Atlas
+
+### AI
+- Google Gemini API
+
+### Deployment
+- Docker
+- Render
+
+## 📌 Project Architecture
+
+```
+React + Vite
+      │
+      ▼
+Spring Boot REST API
+      │
+      ├── MongoDB Atlas
+      │
+      └── Google Gemini API
 ```
 
-### Deployment Commands
+## 📷 Screenshots
 
-We provide a convenient script (`deploy.sh`) to automate this, or you can run the commands manually:
+> Add screenshots of:
+- Login Page
+- Registration Page
+- Dashboard
+- Search Results
+- AI Explanation
 
-* **Build and Start Containers**:
-  ```bash
-  chmod +x deploy.sh
-  ./deploy.sh
-  ```
-  *Alternatively, manually run:* `docker compose up --build -d`
+## ⚙️ Installation
 
-* **Check Container Status**:
-  ```bash
-  docker ps
-  ```
+### Clone Repository
 
-* **View Logs**:
-  ```bash
-  docker compose logs -f
-  ```
+```bash
+git clone https://github.com/Subbu201/AI-Powered-Search-Engine-.git
+```
 
-### Access Application
+### Backend
 
-Once the containers are running, you can access your application locally at:
+```bash
+cd backend
+mvn clean install
+mvn spring-boot:run
+```
 
-* **Frontend**: `http://localhost:3000`
-* **Backend**: `http://localhost:8080`
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+## 🔑 Environment Variables
+
+### Backend
+
+```properties
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+GEMINI_API_KEY=your_google_gemini_api_key
+```
+
+### Frontend
+
+```env
+VITE_API_BASE_URL=https://ai-powered-search-engine-1-e8vr.onrender.com
+```
+
+## 📡 API Endpoints
+
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| POST | /register | Register User |
+| POST | /login | User Login |
+| GET | /repositories | Get Repositories |
+| POST | /repositories | Add Repository |
+| GET | /search | Search Code |
+| POST | /ai/explain | Generate AI Explanation |
+
+## 🎯 Future Enhancements
+
+- GitHub OAuth Login
+- Repository Synchronization
+- Semantic Vector Search
+- Multi-language Code Analysis
+- Dark Mode
+- Code Complexity Analysis
+
+## 👨‍💻 Author
+
+**Subbu**
+
+LinkedIn: *(Add your LinkedIn profile)*
+
+GitHub: https://github.com/Subbu201
+
+---
+
+⭐ If you found this project helpful, consider giving it a Star!
