@@ -68,7 +68,6 @@ const LoginPage = () => {
           
           {loading && (
             <div style={{ marginTop: '15px', fontSize: '13px', color: '#666', textAlign: 'center', padding: '10px', backgroundColor: '#f0f4f8', borderRadius: '4px' }}>
-              <i style={{ display: 'block', marginBottom: '5px' }}>⏱️ Note: If the server was asleep, this might take up to 15-30 seconds to wake up.</i>
               Please don't refresh the page.
             </div>
           )}
