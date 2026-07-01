@@ -36,6 +36,8 @@ services:
       - NVIDIA_API_KEY=${NVIDIA_API_KEY}
     ports:
       - "8080:8080"
+    volumes:
+      - repo_data:/app/imported-repositories
     networks:
       - app_network
 
@@ -54,6 +56,7 @@ services:
 
 volumes:
   db_data:
+  repo_data:
 
 networks:
   app_network:
