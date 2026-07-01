@@ -31,23 +31,21 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-        
+
         try {
             org.springframework.security.core.Authentication authentication = authenticationManager.authenticate(
                     new org.springframework.security.authentication.UsernamePasswordAuthenticationToken(
                             loginRequest.getUsername(),
-                            loginRequest.getPassword()
-                    )
-            );
-            
+                            loginRequest.getPassword()));
+
             User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow();
             String jwt = jwtService.generateToken(user);
-            
-            return ResponseEntity.ok(new AuthResponse(jwt, 
-                                                     "Bearer",
-                                                     user.getId(), 
-                                                     user.getUsername(), 
-                                                     user.getEmail()));
+
+            return ResponseEntity.ok(new AuthResponse(jwt,
+                    "Bearer",
+                    user.getId(),
+                    user.getUsername(),
+                    user.getEmail()));
         } catch (org.springframework.security.core.AuthenticationException e) {
             return ResponseEntity.status(401).body("Error: Invalid username or password!");
         }
@@ -55,7 +53,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody RegisterRequest signUpRequest) {
-        
+
         Optional<User> existingUser = userRepository.findByEmail(signUpRequest.getEmail());
         if (existingUser.isEmpty()) {
             existingUser = userRepository.findByUsername(signUpRequest.getUsername());
@@ -78,5 +76,10 @@ public class AuthController {
         userRepository.save(user);
 
         return ResponseEntity.ok("User registered successfully!");
+    }
+
+    @PostMapping("/health")
+    public ResponseEntity<?> health() {
+        return ResponseEntity.ok("Search Engine Backend is running");
     }
 }
