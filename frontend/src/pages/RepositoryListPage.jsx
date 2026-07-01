@@ -46,6 +46,9 @@ const RepositoryListPage = () => {
           
           if (stats.status === 'COMPLETED' || stats.status === 'FAILED') {
             needsRefresh = true;
+            if (indexing === repo.id) {
+              setIndexing(null);
+            }
           }
         } catch (e) {
           console.error(e);
