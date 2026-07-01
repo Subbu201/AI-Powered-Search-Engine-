@@ -1,3 +1,5 @@
+LIVE DEMO : https://ai-powered-search-engine-2.onrender.com/
+
 # AI-Powered Code Search & Repository Analytics Platform
 
 ## Local Docker Deployment
@@ -42,5 +44,4 @@ We provide a convenient script (`deploy.sh`) to automate this, or you can run th
 
 Once the containers are running, you can access your application locally at:
 
-* **Frontend**: `http://localhost:3000`
-* **Backend**: `http://localhost:8080`
+
