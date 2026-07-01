@@ -26,7 +26,7 @@ public class FileIndexingService {
     private RepositoryRepository repositoryRepository;
 
     private static final List<String> ALLOWED_EXTENSIONS = Arrays.asList(
-            ".java", ".js", ".py", ".html", ".css", ".xml", ".sql"
+            ".java", ".js", ".jsx", ".ts", ".tsx", ".py", ".html", ".css", ".xml", ".sql"
     );
 
     private static final List<String> IGNORED_FOLDERS = Arrays.asList(
