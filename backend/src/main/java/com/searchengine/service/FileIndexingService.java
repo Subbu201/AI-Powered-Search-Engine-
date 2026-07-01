@@ -44,7 +44,16 @@ public class FileIndexingService {
 
         File baseDir = new File(repo.getLocalPath());
         if (!baseDir.exists() || !baseDir.isDirectory()) {
-            throw new Exception("Local directory does not exist: " + repo.getLocalPath());
+            // Auto-repair for ephemeral environments (like Render)
+            if (baseDir.getParentFile() != null) {
+                baseDir.getParentFile().mkdirs();
+            }
+            ProcessBuilder pb = new ProcessBuilder("git", "clone", repo.getRepositoryUrl(), repo.getLocalPath());
+            pb.redirectErrorStream(true);
+            Process p = pb.start();
+            if (p.waitFor() != 0) {
+                throw new Exception("Local directory does not exist and auto-reclone failed: " + repo.getLocalPath());
+            }
         }
 
         // Prevent double indexing
